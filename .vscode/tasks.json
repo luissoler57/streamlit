@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "docker-build",
+      "label": "docker-build",
+      "platform": "python",
+      "dockerBuild": {
+        "tag": "streamlit:latest",
+        "dockerfile": "${workspaceFolder}/Dockerfile",
+        "context": "${workspaceFolder}",
+        "pull": true
+      }
+    },
+    {
+      "type": "docker-run",
+      "label": "docker-run: debug",
+      "dependsOn": ["docker-build"],
+      "dockerRun": {
+        "env": {
+          "STREAMLIT_SERVER_ADDRESS": "0.0.0.0",
+          "STREAMLIT_SERVER_PORT": "8501"
+        },
+        "volumes": [
+          {
+            "localPath": "${workspaceFolder}",
+            "containerPath": "/app",
+            "permissions": "ro"
+          }
+        ],
+        "ports": [
+          {
+            "containerPort": 8501,
+            "hostPort": 8501
+          }
+        ]
+      },
+      "python": {
+        "args": [
+          "run",
+          "main.py",
+          "--server.address=0.0.0.0",
+          "--server.port=8501"
+        ],
+        "module": "streamlit"
+      }
+    }
+  ]
+}
