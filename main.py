@@ -19,7 +19,7 @@ with col1:
     )
     contribucion_mensual = st.number_input(
         label="Additional Monthly Contribution", value=0, step=100, min_value=0
-    )
+    ) 
     tiempo = st.number_input(label="Number of Years", value=10, min_value=1)
 
 
